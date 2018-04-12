@@ -9,7 +9,7 @@ if (isset($_POST['createaccount'])) {
                         if (preg_match('/[a-zA-Z0-9_]+/', $username)) {
                                 if (strlen($password) >= 6 && strlen($password) <= 60) {
                                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                        DB::query('INSERT INTO users VALUES (\'\', :username, :password, :email)', array(':username'=>$username, ':password'=>password_hash($password, PASSWORD_BCRYPT), ':email'=>$email));
+                                        DB::query('INSERT INTO users VALUES (null,:username, :password, :email)', array(':username'=>$username, ':password'=>password_hash($password, PASSWORD_BCRYPT), ':email'=>$email));
                                         echo "Success!";
                                 } else {
                                         echo 'Invalid email!';
