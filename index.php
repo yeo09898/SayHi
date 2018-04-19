@@ -1,5 +1,5 @@
 <?php
-include('./index.html');
+include('./layout.html');
 include('./classes/DB.php');
 include('./classes/Login.php');
 include('./classes/Post.php');

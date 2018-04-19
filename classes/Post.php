@@ -17,6 +17,21 @@ class Post{
         }
 	}
 	
+	public static function createImgPost($postbody, $loggedInUserId, $profileUserId, $image){	
+		
+		if(strlen($postbody) > 200){
+			die('Your Post is Too Long!');
+		}
+		
+        if ($loggedInUserId == $profileUserId) {
+			DB::query('INSERT INTO posts VALUES (null, :postbody, NOW(), :userid, 0, null)', array(':postbody'=>$postbody, ':userid'=>$profileUserId));
+			$postid = DB::query('SELECT id FROM posts WHERE user_id=:userid ORDER BY id DESC LIMIT 1',array(':userid'=>$loggedInUserId))[0]['id'];
+			return $postid;
+		} else {
+            die('Incorrect user!');
+        }
+	}
+	
 	public static function likePost($postId, $likerId){
 		if (!DB::query('SELECT user_id FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$postId, ':userid'=>$likerId))) {
             DB::query('UPDATE posts SET likes=likes+1 WHERE id=:postid', array(':postid'=>$postId));
@@ -33,7 +48,7 @@ class Post{
         $posts = "";
         foreach($dbposts as $p) {
 			if(!DB::query('SELECT post_id FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$p['id'], ':userid'=>$loggedInUserId))){
-				$posts .= htmlspecialchars($p['body'])."
+				$posts .= "<img src='".$p['postimg']."'>".htmlspecialchars($p['body'])."
 				<form action='profile.php?username=$username&postid=".$p['id']."' method='post'>
                 <input type='submit' name='like' value='Like'>
 				<span>".$p['likes']."likes</span>
@@ -41,7 +56,7 @@ class Post{
 				<hr /></br />
 				";
 			}else{
-				$posts .= htmlspecialchars($p['body'])."
+				$posts .= "<img src='".$p['postimg']."'>".htmlspecialchars($p['body'])."
 				<form action='profile.php?username=$username&postid=".$p['id']."' method='post'>
                 <input type='submit' name='unlike' value='Unlike'>
 				<span>".$p['likes']."likes</span>

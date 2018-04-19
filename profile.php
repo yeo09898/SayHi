@@ -1,7 +1,9 @@
 <?php
+include('./layout.html');
 include('./classes/DB.php');
 include('./classes/Login.php');
 include('./classes/Post.php');
+include('./classes/Image.php');
 
 $username = "";
 $verified = False;
@@ -42,8 +44,13 @@ if (isset($_GET['username'])) {
                         $isFollowing = True;
                 }
                 if (isset($_POST['post'])) {
-                        Post::createPost($_POST['postbody'], Login::isLoggedIn(), $userid);
-                }
+					if($_FILES['postimg']['size'] == 0){
+						Post::createPost($_POST['postbody'], Login::isLoggedIn(), $userid);
+					}else{
+						$postid = Post::createImgPost($_POST['postbody'], Login::isLoggedIn(), $userid, $_FILES);
+						Image::uploadImage('postimg', "UPDATE posts SET postimg=:postimg WHERE id=:postid",array(':postid'=>$postid));
+					}
+				}
 				if(isset($_GET['postid'])){
 					Post::likePost($_GET['postid'], $followerid);
 				}
@@ -67,9 +74,12 @@ if (isset($_GET['username'])) {
         }
         ?>
 </form>
-<form action="profile.php?username=<?php echo $username; ?>" method="post">
-        <textarea name="postbody" rows="8" cols="80"></textarea>
-        <input type="submit" name="post" value="Post">
+
+<form action="profile.php?username=<?php echo $username; ?>" method="post" enctype="multipart/form-data">
+		<textarea name="postbody" rows="8" cols="80"></textarea>
+		<br/>Upload a image:
+		<input type="file" name="postimg">
+		<input type="submit" name="post" value="Post">
 </form>
 
 <div class="posts">

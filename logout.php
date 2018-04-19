@@ -1,4 +1,5 @@
 <?php
+include('./layout.html');
 include('./classes/DB.php');
 include('./classes/Login.php');
 if (!Login::isLoggedIn()) {

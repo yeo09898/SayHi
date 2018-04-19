@@ -1,4 +1,5 @@
 <?php
+include('./layout.html');
 include('./classes/DB.php');
 if (isset($_POST['resetpassword'])) {
         $cstrong = True;
