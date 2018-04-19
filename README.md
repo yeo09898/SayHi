@@ -1,7 +1,1 @@
 # SayHi
-https://imgur.com/#access_token=e87355a94928e4ffa47a2a74b924d6cb4c72b40d&expires_in=315360000&token_type=bearer&refresh_token=f17df4497039496313685b2307589f55596beb0f&account_username=yeo09898&account_id=85908955
-
-
-/#access_token=e87355a94928e4ffa47a2a74b924d6cb4c72b40d&expires_in=315360000
-
-refresh_token=f17df4497039496313685b2307589f55596beb0f
