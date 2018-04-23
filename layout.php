@@ -1,9 +1,7 @@
-﻿<!DOCTYPE html>
-
-<html>
+﻿<html>
     <head>
         <title>SayHi</title>
-        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+        <link rel="stylesheet" type="text/css" href="./css/style1.css" />
     </head>
     <body>
         <div class="headerMenu">
@@ -12,9 +10,9 @@
                     <img src="./img/SayHi_Logo.png" />
                 </div>
 				<div class="search_box">
-                    <form action="search.php" method="get" id="search">
-                        <input type="text" name="q" size="60" placeholder="Search ..." />
-                    </form>
+                    <form action="index.php" method="post" id="search">
+                        <input type="text" name="searchbox" size="60" value="" placeholder="Search ..." />
+					</form>
 				</div>
             </div>
         </div> 
