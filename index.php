@@ -9,7 +9,7 @@ if (Login::isLoggedIn()) {
         $userid = Login::isLoggedIn();
         $showTimeline = True;
 } else {
-        echo 'Not logged in!<hr /></br />';
+        die('Not logged in!)<hr /></br />';
 }
 if (isset($_GET['postid'])) {
         Post::likePost($_GET['postid'], $userid);

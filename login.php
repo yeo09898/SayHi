@@ -1,5 +1,5 @@
 <?php
-include('./layout.php');
+include('./layout.html');
 include('./classes/DB.php');
 if (isset($_POST['login'])) {
         $username = $_POST['username'];
