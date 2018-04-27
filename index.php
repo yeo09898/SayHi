@@ -1,5 +1,5 @@
 <?php
-include('./layout.php');
+include('./layout.html');
 include('./classes/DB.php');
 include('./classes/Login.php');
 include('./classes/Post.php');
@@ -9,7 +9,7 @@ if (Login::isLoggedIn()) {
         $userid = Login::isLoggedIn();
         $showTimeline = True;
 } else {
-        die('Not logged in!)<hr /></br />';
+        die('Not logged in!');
 }
 if (isset($_GET['postid'])) {
         Post::likePost($_GET['postid'], $userid);
@@ -49,6 +49,7 @@ WHERE posts.user_id = followers.user_id
 AND users.id = posts.user_id
 AND follower_id = :userid
 ORDER BY posts.likes DESC;',array(':userid'=>$userid));
+echo "</br></br></br>";
 foreach ($followingposts as $post) {
 	
 	echo $post['body']." ~ ".$post['username'];

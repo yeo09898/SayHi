@@ -2,23 +2,7 @@
     margin: 0px;
     padding: 0px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-}
-.headerMenu {
-    background-color: #0191c8;
-    height: 60px;
-    border-bottom: 0px;
-    padding-left: 0%;
-    padding-right: 0%;
-    width: 100%;
-}
-#wrapper {
-    background-color: #0191c8;
-    margin-left: auto;
-    margin-right: auto;
-    width: 1000px;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    font-size: 14px;
 }
 .logo {
     background-color: #005b9a;
@@ -27,17 +11,16 @@
 }
 .logo img {
     background-color: #005b9a;
-    width: 150px;
-    height: 60px;
+    width: 125px;
+    height: 50px;
 }
+
 .search_box {
-    background-color: #005b9a;
-    position: absolute;
-    top: 12px;
-    margin-left: 180px;
+    top: 30px;
 }
+
 #search input[type="text"] {
-    background: url(../img/search-white-15.png) no-repeat 10px 6px #005b9a;
+    background: url(../img/search-white-20.png) no-repeat 10px 6px #005b9a;
     outline: none;
     border: 0 none;
     width: 350px;
@@ -53,8 +36,8 @@
     transition: all 0.7s ease 0s;
 }
     #search input[type="text"]:focus {
-        background: url(../img/search-dark-15.png) no-repeat 10px 6px #fcfcfc;
-        color: #6a6f75;
+        background: url(../img/search-dark-20.png) no-repeat 10px 6px #fcfcfc;
+        color: #8c8984;
         width: 350px;
         -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.9) inset;
         -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.9) inset;
@@ -66,12 +49,13 @@
 body, html {
     height: 100%;
     background-repeat: no-repeat;
-    background: #74c2e1;
+    background: #f2f6fc;
 }
 
 .card-container.card {
     max-width: 350px;
     padding: 40px 40px;
+	margin-top: 15%;
 }
 
 .btn {
@@ -199,20 +183,42 @@ body, html {
     color: rgb(0, 91, 154);
 }
 
+.navbar-form {
+    width: auto;
+    padding-top: 4px;
+    padding-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.navbar-form {
+    width: auto;
+    padding-top: 0px;
+    padding-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
 nav.navbar-findcond { background: #005b9a; border-color: #0191c8; box-shadow: 0 0 2px 0 #0191c8; }
 nav.navbar-findcond a { color: #fff; }
-nav.navbar-findcond ul.navbar-nav a { color: #f14444; border-style: solid; border-width: 2px 0 2px 0; height: 60px; border-color: #0191c8; }
+nav.navbar-findcond ul.navbar-nav a { color: #fff; border-style: solid; font-size:14 ;border-width: 0px 0 2px 0; border-color: #005b9a; }
 nav.navbar-findcond ul.navbar-nav a:hover,
 nav.navbar-findcond ul.navbar-nav a:visited,
 nav.navbar-findcond ul.navbar-nav a:focus,
 nav.navbar-findcond ul.navbar-nav a:active { background: #0191c8; }
-nav.navbar-findcond ul.navbar-nav a:hover { border-color: #f14444; }
+nav.navbar-findcond ul.navbar-nav a:hover { border-color: #8c8984; }
 nav.navbar-findcond li.divider { background: #0191c8; }
-nav.navbar-findcond button.navbar-toggle { background: #f14444; border-radius: 2px; }
+nav.navbar-findcond button.navbar-toggle { background: #ffde3a; border-radius: 2px; }
 nav.navbar-findcond button.navbar-toggle:hover { background: #999; }
 nav.navbar-findcond button.navbar-toggle > span.icon-bar { background: #fff; }
-nav.navbar-findcond ul.dropdown-menu { border: 0; background: #fff; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; }
-nav.navbar-findcond ul.dropdown-menu > li > a { color: #444; }
-nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #f14444; color: #fff; }
-nav.navbar-findcond span.badge { background: #f14444; font-weight: normal; font-size: 11px; margin: 0 4px; }
+nav.navbar-findcond ul.dropdown-menu { border: 0; background: #005b9a; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; }
+nav.navbar-findcond ul.dropdown-menu > li > a { color: #fff; }
+nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #fff; color: #000; }
+nav.navbar-findcond span.badge { background: #ffde3a; font-weight: normal; font-size: 18px; margin: 0 4px; }
 nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #fff; }

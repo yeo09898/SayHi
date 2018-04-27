@@ -1,5 +1,5 @@
 <?php
-include('./layout.html');
+//include('./layout.html');
 include('./classes/DB.php');
 if (isset($_POST['login'])) {
         $username = $_POST['username'];
@@ -21,6 +21,9 @@ if (isset($_POST['login'])) {
         }
 }
 ?>
+</br>
+</br>
+</br>
 <h1>Login to your account</h1>
 <form action="login.php" method="post">
 <input type="text" name="username" value="" placeholder="Username ..."><p />

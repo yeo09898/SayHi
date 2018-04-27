@@ -1,5 +1,5 @@
 <?php
-include('./layout.php');
+include('./layout.html');
 include('./classes/DB.php');
 include('./classes/Login.php');
 $tokenIsValid = False;
