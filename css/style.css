@@ -7,7 +7,7 @@
 .logo {
     background-color: #005b9a;
     width: 125px;
-    margin-left:3%;
+    margin-left:50px;
 }
 .logo img {
     background-color: #005b9a;
@@ -23,7 +23,7 @@
     background: url(../img/search-white-20.png) no-repeat 10px 6px #005b9a;
     outline: none;
     border: 0 none;
-    width: 350px;
+    width: auto;
     font: bold 12px Arial,Helvetica,Sans-serif;
     padding: 6px 15px 6px 35px;
     text-shadow: 0 2px 2px rgba(0,0,0,0.3);
@@ -38,7 +38,7 @@
     #search input[type="text"]:focus {
         background: url(../img/search-dark-20.png) no-repeat 10px 6px #fcfcfc;
         color: #8c8984;
-        width: 350px;
+        width: auto;
         -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.9) inset;
         -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.9) inset;
         box-shadow: 0 1px 0 rgba(255,255,255,0.1), 0 1px 3px rgba(0,0,0,0.9) inset;
@@ -207,7 +207,7 @@ body, html {
 
 nav.navbar-findcond { background: #005b9a; border-color: #0191c8; box-shadow: 0 0 2px 0 #0191c8; }
 nav.navbar-findcond a { color: #fff; }
-nav.navbar-findcond ul.navbar-nav a { color: #fff; border-style: solid; font-size:14 ;border-width: 0px 0 2px 0; border-color: #005b9a; }
+nav.navbar-findcond ul.navbar-nav a { color: #fff; border-style: solid; font-size:14 ;border-width: 0px 0 2px 0; border-color: #005b9a;}
 nav.navbar-findcond ul.navbar-nav a:hover,
 nav.navbar-findcond ul.navbar-nav a:visited,
 nav.navbar-findcond ul.navbar-nav a:focus,
@@ -220,5 +220,5 @@ nav.navbar-findcond button.navbar-toggle > span.icon-bar { background: #fff; }
 nav.navbar-findcond ul.dropdown-menu { border: 0; background: #005b9a; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; }
 nav.navbar-findcond ul.dropdown-menu > li > a { color: #fff; }
 nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #fff; color: #000; }
-nav.navbar-findcond span.badge { background: #ffde3a; font-weight: normal; font-size: 18px; margin: 0 4px; }
+nav.navbar-findcond span.badge { background: #ffde3a; font-weight: normal; font-size: 14px; margin: 0 4px; }
 nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #fff; }
