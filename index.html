@@ -5,23 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SayHi</title>
-	
 	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="./js/jquery.min.js"></script>
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-	<script src="js/jquery.min.js"></script>
-    <script src="js/bs-animation.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+    <script src="./js/bs-animation.js"></script>
 	<script src="./js/sayhi.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 </head>
 
 <body>
     <div layout="layout.html"></div>
     <div class="container">
-        <h1>Timeline </h1>
-        <div class="timelineposts">
+        <h1 align=center>Timeline</h1>
+		<div class="col-md-3"></div>
+		<div class="col-md-6">
+			<ul class="list-group">
+                            <div class="timelineposts">
 
-        </div>
+                            </div>
+            </ul>
+		</div>
+		<div class="col-md-3"></div>
     </div>
     <div class="modal fade" role="dialog" tabindex="-1" data-aos="fade-up">
         <div class="modal-dialog" role="document">
@@ -40,13 +45,9 @@
             </div>
         </div>
     </div>
-    <div class="footer-dark navbar-fixed-bottom">
-        <footer>
-            <div class="container">
-                <p class="copyright">Social Network© 2016</p>
-            </div>
-        </footer>
-    </div>
+	
+
+    
     
     <script type="text/javascript">
 		includeHTML();
@@ -60,9 +61,45 @@
                         success: function(r) {
                                 var posts = JSON.parse(r)
                                 $.each(posts, function(index) {
+										//get each post
                                         $('.timelineposts').html(
-                                                $('.timelineposts').html() + '<blockquote><p>'+posts[index].PostBody+'</p><footer>Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</br><div style = "text-align:right;"><button class="btn btn-default" type="button" style="color:#eb3b60;background-image:url(&quot;none&quot;);background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+posts[index].Likes+' Likes</span></button><button class="btn btn-default comment" type="button" style="color:#eb3b60;background-image:url(&quot;none&quot;);background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></div>'
+                                                $('.timelineposts').html() + '<li class="list-group-item"><blockquote><p>'+posts[index].PostBody+'</p><footer align="right">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="'+posts[index].PostId+'" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+posts[index].Likes+' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="'+posts[index].PostId+'" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
                                         )
+										$('[data-postid]').click(function() {
+                                            var buttonid = $(this).attr('data-postid');
+                                            $.ajax({
+                                                type: "GET",
+                                                url: "api/comments?postid=" + $(this).attr('data-postid'),
+                                                processData: false,
+                                                contentType: "application/json",
+                                                data: '',
+                                                success: function(r) {
+                                                    var res = JSON.parse(r)
+                                                    showCommentsModal(res);
+                                                },
+                                                error: function(r) {
+                                                    console.log(r)
+                                                }
+                                            });
+                                        });
+										//like button
+										$('[data-id]').click(function() {
+                                            var buttonid = $(this).attr('data-id');
+                                            $.ajax({
+												type: "POST",
+                                                url: "api/likes?id=" + $(this).attr('data-id'),
+                                                processData: false,
+                                                contentType: "application/json",
+                                                data: '',
+                                                success: function(r) {
+                                                    var res = JSON.parse(r)
+                                                    $("[data-id='"+buttonid+"']").html(' <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+res.Likes+' Likes</span>')
+                                                },
+                                                error: function(r) {
+                                                    console.log(r)
+                                                }
+											});
+										})
                                 })
                         },
                         error: function(r) {
@@ -70,6 +107,17 @@
                         }
                 });
         });
+		 function showCommentsModal(res) {
+                $('.modal').modal('show')
+                var output = "";
+                for (var i = 0; i < res.length; i++) {
+                        output += res[i].Comment;
+                        output += " ~ ";
+                        output += res[i].CommentedBy;
+                        output += "<hr />";
+                }
+                $('.modal-body').html(output)
+        }
     </script>
 </body>
 

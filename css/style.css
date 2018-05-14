@@ -246,13 +246,12 @@ nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #f
 
 
 h1, .h1, h2, .h2, h3, .h3 {
-    margin-top: 8%;
-    margin-bottom: 50px;
-	margin-left: 50px;
+    margin-top: 6%;
+    margin-bottom: 25px;
 }
 
 .footer-dark {
-  padding:50px 0;
+  padding:0 0;
   color:#f0f9ff;
   background-color:#282d32;
 }
@@ -335,7 +334,7 @@ h1, .h1, h2, .h2, h3, .h3 {
 
 .footer-dark .copyright {
   text-align:center;
-  padding-top:24px;
+  padding-top:0;
   opacity:0.3;
   font-size:13px;
   margin-bottom:0;
@@ -347,7 +346,7 @@ h1, .h1, h2, .h2, h3, .h3 {
 
 blockquote {
   padding:10px 20px;
-  margin:0 20% 20px 50px;
+  margin:0 0 0 0;
   font-size:17.5px;
   border-left:5px solid #74c2e1;
   background: #fff;
@@ -359,3 +358,76 @@ i.glyphicon.glyphicon-search {
   left:8px;
   color:#b1afaf;
 }
+
+.btn-like {
+    font-weight: 700;
+    height: 32px;
+    width: 86px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+.btn-like {
+    display: inline-block;
+    padding: 6px 12px;
+    padding-top: 6px;
+    padding-right: 12px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-comment {
+    font-weight: 700;
+    height: 32px;
+    width: 120px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+.btn-comment {
+    display: inline-block;
+    padding: 6px 12px;
+    padding-top: 6px;
+    padding-right: 12px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+

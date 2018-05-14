@@ -5,13 +5,47 @@ $db = new DB("127.0.0.1", "socialnetwork", "root", "shuzi");
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
         if ($_GET['url'] == "auth") {
         } else if ($_GET['url'] == "users") {
-        } else if ($_GET['url'] == "posts") {
+        } else if ($_GET['url'] == "comments" && isset($_GET['postid'])) {
+                $output = "";
+                $comments = $db->query('SELECT comments.comment, users.username FROM comments, users WHERE post_id = :postid AND comments.user_id = users.id', array(':postid'=>$_GET['postid']));
+                $output .= "[";
+                foreach($comments as $comment) {
+                        $output .= "{";
+                        $output .= '"Comment": "'.$comment['comment'].'",';
+                        $output .= '"CommentedBy": "'.$comment['username'].'"';
+                        $output .= "},";
+                        //echo $comment['comment']." ~ ".$comment['username']."<hr />";
+                }
+                $output = substr($output, 0, strlen($output)-1);
+                $output .= "]";
+                echo $output;
+        }else if ($_GET['url'] == "posts") {
                 $token = $_COOKIE['SNID'];
                 $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 $followingposts = $db->query('SELECT posts.id, posts.body, posts.posted_at, posts.likes, users.`username` FROM users, posts, followers
                 WHERE posts.user_id = followers.user_id
                 AND users.id = posts.user_id
                 AND follower_id = :userid
+                ORDER BY posts.likes DESC;', array(':userid'=>$userid));
+                $response = "[";
+                foreach($followingposts as $post) {
+                        $response .= "{";
+                                $response .= '"PostId": '.$post['id'].',';
+                                $response .= '"PostBody": "'.$post['body'].'",';
+                                $response .= '"PostedBy": "'.$post['username'].'",';
+                                $response .= '"PostDate": "'.$post['posted_at'].'",';
+                                $response .= '"Likes": '.$post['likes'].'';
+                        $response .= "},";
+                }
+                $response = substr($response, 0, strlen($response)-1);
+                $response .= "]";
+                http_response_code(200);
+                echo $response;
+        }else if ($_GET['url'] == "profileposts") {
+                $userid = $db->query('SELECT id FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['id'];
+                $followingposts = $db->query('SELECT posts.id, posts.body, posts.posted_at, posts.likes, users.`username` FROM users, posts
+                WHERE users.id = posts.user_id
+                AND users.id = :userid
                 ORDER BY posts.likes DESC;', array(':userid'=>$userid));
                 $response = "[";
                 foreach($followingposts as $post) {
@@ -90,6 +124,22 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                         echo '{ "Error": "Invalid username or password!" }';
                         http_response_code(401);
                 }
+        }else if ($_GET['url'] == "likes") {
+                $postId = $_GET['id'];
+                $token = $_COOKIE['SNID'];
+                $likerId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
+                if (!$db->query('SELECT user_id FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$postId, ':userid'=>$likerId))) {
+                        $db->query('UPDATE posts SET likes=likes+1 WHERE id=:postid', array(':postid'=>$postId));
+                        $db->query('INSERT INTO post_likes VALUES (null, :postid, :userid)', array(':postid'=>$postId, ':userid'=>$likerId));
+                        //Notify::createNotify("", $postId);
+                } else {
+                        $db->query('UPDATE posts SET likes=likes-1 WHERE id=:postid', array(':postid'=>$postId));
+                        $db->query('DELETE FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$postId, ':userid'=>$likerId));
+                }
+                echo "{";
+                echo '"Likes":';
+                echo $db->query('SELECT likes FROM posts WHERE id=:postid', array(':postid'=>$postId))[0]['likes'];
+                echo "}";
         }
 }  else if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
         if ($_GET['url'] == "auth") {
