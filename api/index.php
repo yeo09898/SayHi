@@ -1,7 +1,7 @@
 <?php
 require_once("DB.php");
 require_once("Mail.php");
-$db = new DB("127.0.0.1", "socialnetwork", "root", "shuzi");
+$db = new DB("127.0.0.1", "socialnetwork", "bear", "shuzi");
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
         if ($_GET['url'] == "auth") {
         } else if ($_GET['url'] == "search") {
