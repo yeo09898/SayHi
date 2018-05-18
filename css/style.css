@@ -17,13 +17,15 @@
 
 .search_box {
     top: 30px;
+	position:relative;
 }
 
 #search input[type="text"] {
     background: url(../img/search-white-20.png) no-repeat 10px 6px #005b9a;
     outline: none;
     border: 0 none;
-    width: auto;
+	width: auto;
+	position:absolute;
     font: bold 12px Arial,Helvetica,Sans-serif;
     padding: 6px 15px 6px 35px;
     text-shadow: 0 2px 2px rgba(0,0,0,0.3);
@@ -184,8 +186,9 @@ body, html {
 }
 
 .navbar-form {
+	height: 30px;
     width: auto;
-    padding-top: 4px;
+    padding-top: 0px;
     padding-bottom: 0;
     margin-right: 0;
     margin-left: 0;
@@ -246,7 +249,7 @@ nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #f
 
 
 h1, .h1, h2, .h2, h3, .h3 {
-    margin-top: 6%;
+    margin-top: 80px;
     margin-bottom: 25px;
 }
 

@@ -7,16 +7,6 @@
         <link rel="stylesheet" type="text/css" href="./css/style.css" />
     </head>
     <body>				
-		<header class="hidden-sm hidden-md hidden-lg">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-					</button>
-                </div>
-		</header>
 		<nav class="navbar navbar-findcond navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -31,6 +21,11 @@
 							</div>
 						</div>
                 <div class="collapse navbar-collapse" id="navbar">
+						<form class="nav navbar-form navbar-left search_form" id="search" role="search">
+								<input type="text" class="form-control" placeholder="Search" />
+								<ul class="list-group autocomplete" style="position:absolute;width:100%; z-index: 100">
+								</ul>
+						</form>
 							<ul class="nav navbar-nav navbar-right">
 								<li class="active"><a href="http://localhost/SayHi/index.html">Home Page <span class="sr-only">(current)</span></a></li>
 								<li class="active"><a href="#">Messages <span class="sr-only">(current)</span></a></li>
@@ -53,16 +48,13 @@
 								</ul>
 								</li>
 							</ul>
-							<form class="nav navbar-form navbar-right search_form" id="search" role="search">
-								<input type="text" class="form-control" placeholder="Search" />
-							</form>
 				</div>
             </div>
         </nav>
 		<nav class="footer-dark navbar-fixed-bottom">
         <footer>
             
-                <p class="copyright">Social Network© 2016</p>
+                <p class="copyright">SayHi © 2018</p>
          
         </footer>
 		</nav>
