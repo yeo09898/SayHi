@@ -44,14 +44,13 @@ if (isset($_GET['username'])) {
                         $isFollowing = True;
                 }
 				
-				if(isset($_POST['deletepost'])){
-					if(DB::query('SELECT id FROM posts WHERE id=:postid AND user_id=:userid', array(':postid'=>$_GET['postid'], ':userid'=>$followerid))){
-						DB::query('DELETE FROM posts WHERE id=:postid AND user_id=:userid',array(':postid'=>$_GET['postid'],':userid'=>$followerid));
-						DB::query('DELETE FROM post_likes WHERE post_id=:postid', array(':postid'=>$_GET['postid']));
-                        echo 'Post deleted!';
-					}
-				}
-				
+		if(isset($_POST['deletepost'])){
+			if(DB::query('SELECT id FROM posts WHERE id=:postid AND user_id=:userid', array(':postid'=>$_GET['postid'], ':userid'=>$followerid))){
+				DB::query('DELETE FROM posts WHERE id=:postid AND user_id=:userid',array(':postid'=>$_GET['postid'],':userid'=>$followerid));
+				DB::query('DELETE FROM post_likes WHERE post_id=:postid', array(':postid'=>$_GET['postid']));
+                                echo 'Post deleted!';
+		        }
+		}		
                 if (isset($_POST['post'])) {
 					if($_FILES['postimg']['size'] == 0){
 						Post::createPost($_POST['postbody'], Login::isLoggedIn(), $userid);
@@ -94,7 +93,7 @@ if (isset($_GET['username'])) {
 <body>
     <div layout="layout.html"></div>
     <div class="container">
-        <h1><?php echo $username; ?>'s Profile <?php if ($verified) { echo '<i class="glyphicon glyphicon-ok-sign verified" data-toggle="tooltip" title="Verified User" style="font-size:28px;color:#da052b;"></i>'; } ?></h1></div>
+        <h1><?php echo $username; ?>'s Profile <?php if ($verified) { echo '<i class="glyphicon glyphicon-ok-sign verified" data-toggle="tooltip" title="Verified User" style="font-size:28px;color:#0191C8;"></i>'; } ?></h1></div>
     <div>
         <div class="container">
             <div class="row">
@@ -110,16 +109,30 @@ if (isset($_GET['username'])) {
                             <div class="timelineposts">
 
                             </div>
-                    </ul>
+                    </ul>+
                 </div>
                 <div class="col-md-3">
-                    <button class="btn btn-default" type="button" style="width:100%;background-color:#da052b;color:#fff;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;">NEW POST</button>
-                    <ul class="list-group"></ul>
+                <?php 
+                if($userid == $followerid){
+                        echo '
+                        <button class="btn btn-default" type="button" style="width:100%;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;" onclick="showNewPostModal()">NEW POST</button>
+                        <ul class="list-group"></ul>
+                       ';
+                }else {
+                        echo '<form action="profile.php?username='.$username.'" method="post">';
+                                if ($isFollowing) {
+                                        echo '<input type="submit" id="unfollow" class="btn btn-default" name="unfollow" value="Unfollow" style="width:100%;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;">';
+                                } else {
+                                        echo '<input type="submit" id="follow" class="btn btn-default" name="follow" value="Follow" style="width:100%;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;">';
+                        }
+                        echo '</form>';
+                }
+                ?>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" role="dialog" tabindex="-1" style="padding-top:100px;">
+    <div class="modal fade" id="commentsmodal" role="dialog" tabindex="-1" style="padding-top:100px;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -134,21 +147,59 @@ if (isset($_GET['username'])) {
             </div>
         </div>
     </div>
+	<div class="modal fade" id="newpost" role="dialog" tabindex="-1" style="padding-top:100px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    <h4 class="modal-title">New Post</h4></div>
+                <form action="profile.php?username=<?php echo $username; ?>" method="post" enctype="multipart/form-data">
+                        <div style="max-height: 400px; overflow-y: auto">
+                                <textarea name="postbody" rows="8" cols="80" placeholder="Write Something?"></textarea>
+                                </br>Upload an image:
+                                <input type="file" name="postimg">
+                        </div>
+                        <div class="modal-footer">
+                                <input type="submit" name="post" value="Post" class="btn btn-default" type="button" style="background-color:#0191C8;color:#fff;padding:0px 16px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:1;outline:none;">
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <nav class="footer-dark navbar-fixed-bottom" style="position: relative">
+        <footer>
+            <div class="container">
+                <p class="copyright">SayHi © 2018</p>
+            </div>
+        </footer>
+    </nav>
     <script type="text/javascript">
-		includeHTML();
-        $(document).ready(function() {
-                $.ajax({
+        includeHTML();
+        var start = 5;
+        var working = false;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() + 1 >= $('body').height() - $(window).height()) {
+                    if (working == false) {
+                            working = true;
+                            $.ajax({
                         type: "GET",
-                        url: "api/profileposts?username=<?php echo $username; ?>",
+                        url: "api/profileposts?username=<?php echo $username; ?>&start="+start,
                         processData: false,
                         contentType: "application/json",
                         data: '',
                         success: function(r) {
                                 var posts = JSON.parse(r)
                                 $.each(posts, function(index) {
-                                        $('.timelineposts').html(
-                                                $('.timelineposts').html() + '<li class="list-group-item"><blockquote><p>'+posts[index].PostBody+'</p><footer align="right">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="'+posts[index].PostId+'" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+posts[index].Likes+' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="'+posts[index].PostId+'" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
-                                        )
+                                        if (posts[index].PostImage == "") {
+                                                $('.timelineposts').html(
+                                                        $('.timelineposts').html() + '<li class="list-group-item" id="'+posts[index].PostId+'"><blockquote><p>'+posts[index].PostBody+'</p><footer align="right">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="'+posts[index].PostId+'" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+posts[index].Likes+' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="'+posts[index].PostId+'" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
+                                                )
+                                        } else{
+                                                $('.timelineposts').html(
+                                                        $('.timelineposts').html() + '<li class="list-group-item" id="'+posts[index].PostId+'"><blockquote><p>'+posts[index].PostBody+'</p><img src="" data-tempsrc="'+posts[index].PostImage+'" class="postimg" id="img'+posts[index].postId+'"><footer align="right">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="'+posts[index].PostId+'" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+posts[index].Likes+' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="'+posts[index].PostId+'" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
+                                                )  
+                                        }
                                         $('[data-postid]').click(function() {
                                                 var buttonid = $(this).attr('data-postid');
                                                 $.ajax({
@@ -184,14 +235,117 @@ if (isset($_GET['username'])) {
                                                 });
                                         })
                                 })
+
+                                $('.postimg').each(function() {
+                                        this.src=$(this).attr('data-tempsrc')
+                                        this.onload = function() {
+                                                this.style.opacity = '1';
+                                        }
+                                })
+
+				scrollToAnchor(location.hash)
+
+                                start+=5;
+                                setTimeout(function() {
+                                        working = false;
+                                }, 4000)
+
+                        },
+                        error: function(r) {
+                                console.log(r)
+                        }
+                });
+                    }
+            }
+    })
+
+        function scrollToAnchor(aid) {
+                try {
+                        var aTag = $(aid);
+                        $('html,body').animate({
+                        scrollTop: aTag.offset().top
+                        }, 'slow');
+                } catch (error) {
+                        console.log(error)
+                }
+        }
+
+        $(document).ready(function() {
+                $.ajax({
+                        type: "GET",
+                        url: "api/profileposts?username=<?php echo $username; ?>&start=0",
+                        processData: false,
+                        contentType: "application/json",
+                        data: '',
+                        success: function(r) {
+                                var posts = JSON.parse(r)
+                                $.each(posts, function(index) {
+                                        if (posts[index].PostImage == "") {
+                                                $('.timelineposts').html(
+                                                        $('.timelineposts').html() + '<li class="list-group-item" id="'+posts[index].PostId+'"><blockquote><p>'+posts[index].PostBody+'</p><footer align="right">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="'+posts[index].PostId+'" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+posts[index].Likes+' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="'+posts[index].PostId+'" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
+                                                )
+                                        } else{
+                                                $('.timelineposts').html(
+                                                        $('.timelineposts').html() + '<li class="list-group-item" id="'+posts[index].PostId+'"><blockquote><p>'+posts[index].PostBody+'</p><img src="" data-tempsrc="'+posts[index].PostImage+'" class="postimg" id="img'+posts[index].postId+'"><footer align="right">Posted by '+posts[index].PostedBy+' on '+posts[index].PostDate+'</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="'+posts[index].PostId+'" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+posts[index].Likes+' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="'+posts[index].PostId+'" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
+                                                )  
+                                        }
+                                        $('[data-postid]').click(function() {
+                                                var buttonid = $(this).attr('data-postid');
+                                                $.ajax({
+                                                        type: "GET",
+                                                        url: "api/comments?postid=" + $(this).attr('data-postid'),
+                                                        processData: false,
+                                                        contentType: "application/json",
+                                                        data: '',
+                                                        success: function(r) {
+                                                                var res = JSON.parse(r)
+                                                                showCommentsModal(res);
+                                                        },
+                                                        error: function(r) {
+                                                                console.log(r)
+                                                        }
+                                                });
+                                        });
+                                        $('[data-id]').click(function() {
+                                                var buttonid = $(this).attr('data-id');
+                                                $.ajax({
+                                                        type: "POST",
+                                                        url: "api/likes?id=" + $(this).attr('data-id'),
+                                                        processData: false,
+                                                        contentType: "application/json",
+                                                        data: '',
+                                                        success: function(r) {
+                                                                var res = JSON.parse(r)
+                                                                $("[data-id='"+buttonid+"']").html(' <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> '+res.Likes+' Likes</span>')
+                                                        },
+                                                        error: function(r) {
+                                                                console.log(r)
+                                                        }
+                                                });
+                                        })
+                                })
+
+                                $('.postimg').each(function() {
+                                        this.src=$(this).attr('data-tempsrc')
+                                        this.onload = function() {
+                                                this.style.opacity = '1';
+                                        }
+                                })
+
+				scrollToAnchor(location.hash)
                         },
                         error: function(r) {
                                 console.log(r)
                         }
                 });
         });
+
+	function showNewPostModal() {
+                $('#newpost').modal('show')
+        }
+
         function showCommentsModal(res) {
-                $('.modal').modal('show')
+                $('#commentsmodal').modal('show')
                 var output = "";
                 for (var i = 0; i < res.length; i++) {
                         output += res[i].Comment;

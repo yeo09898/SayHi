@@ -54,9 +54,7 @@
             </div>
         </div>
     </nav>
-    <script type="text/javascript">
-        includeLayout();
-    </script>
+
 </body>
 
 </html>
