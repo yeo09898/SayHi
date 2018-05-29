@@ -40,9 +40,11 @@
                     <textarea></textarea>
                 </div>
                 <div class="modal-footer">
-                    <textarea name='commentbody' id='commentbody' rows='3' cols='80' placeholder='Leave Comments?'></textarea>
-                    </br><button data-comment="" class="btn btn-primary" type="button">Post Comment</button>
-                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                    <form id="commentform">
+                        <textarea name='commentbody' id='commentbody' rows='3' cols='80' value="Leave Comments?" placeholder='Leave Comments?'></textarea>
+                        </br><button data-comment="" class="btn btn-primary" type="button">Post Comment</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -84,6 +86,7 @@
                                         $('.timelineposts').html() + '<li class="list-group-item" id="' + posts[index].PostId + '"><blockquote><p>' + posts[index].PostBody + '</p><img src="" data-tempsrc="' + posts[index].PostImage + '" class="postimg" id="img' + posts[index].postId + '"><footer align="right">Posted by ' + posts[index].PostedBy + ' on ' + posts[index].PostDate + '</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="' + posts[index].PostId + '" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> ' + posts[index].Likes + ' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="' + posts[index].PostId + '" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
                                     )
                                 }
+
                                 $('[data-postid]').click(function() {
                                     var buttonid = $(this).attr('data-postid');
                                     postsId = parseInt($(this).attr('data-postid'));
@@ -118,6 +121,7 @@
                                             console.log(r)
                                         }
                                     });
+                                    document.getElementById("commentform").reset();
                                 });
                                 $('[data-id]').click(function() {
                                     var buttonid = $(this).attr('data-id');
@@ -212,7 +216,7 @@
                         });
 
                         $('[data-comment]').click(function() {
-                            var commentbody = document.getElementById("commentbody").value;;
+                            var commentbody = document.getElementById("commentbody").value;
                             $.ajax({
                                 type: "POST",
                                 url: "api/comments?id=" + postsId + "&commentbody=" + commentbody,
@@ -227,6 +231,7 @@
                                     console.log(r)
                                 }
                             });
+                            document.getElementById("commentform").reset();
                         });
 
                         $('[data-id]').click(function() {

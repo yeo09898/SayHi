@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 			echo 'Invalid post ID';
 		}else if($db->query('SELECT id FROM comments WHERE comment=:comment AND user_id=:userid AND post_id = :postid', array(':comment'=>$commentBody, ':userid'=>$userId, ':postid'=>$postId))){
                 }else{
-			$db->query('INSERT IGNORE INTO comments VALUE (null, :comment, :userid, NOW(), :postid)', array(':comment'=>$commentBody, ':userid'=>$userId, ':postid'=>$postId));
+			$db->query('INSERT INTO comments VALUE (null, :comment, :userid, NOW(), :postid)', array(':comment'=>$commentBody, ':userid'=>$userId, ':postid'=>$postId));
 		}
                 $output = "";
                 $comments = $db->query('SELECT DISTINCT comments.comment, users.username FROM comments, users WHERE post_id = :postid AND comments.user_id = users.id', array(':postid'=>$postId));

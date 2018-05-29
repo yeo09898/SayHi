@@ -1,6 +1,6 @@
 function includeHTML() {
     $('.sbox').keyup(function() {
-        $('#searchres').style.opacity = '1';
+        $('#searchres').show();
         $('.autocomplete').html("")
         $.ajax({
             type: "GET",
@@ -23,6 +23,13 @@ function includeHTML() {
             }
         })
     })
+
+    $(function() {
+        $('body').click(function() {
+            $('#searchres').hide();
+        })
+    })
+
     var z, i, elmnt, file, xhttp;
     /*loop through a collection of all HTML elements:*/
     z = document.getElementsByTagName("*");
