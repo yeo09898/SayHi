@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayHi</title>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="./js/bs-animation.js"></script>
+    <script src="./js/sayhi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+</head>
+
+<body>
+    <div layout="layout.html"></div>
+    <div class="card card-container">
+        <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
+        <img id="profile-img" class="profile-img-card" src="./img/music-social-group.png" />
+        <p id="profile-name" class="profile-name-card">Logout of your Account?</p><br /><br />
+        <form action="logout.php" method="post">
+            <p align=center><input id="checkbox" type="checkbox" name="alldevices" value="alldevices"> Logout of all devices?</p>
+            <p align=center><button id="confirm" type="button" class="btn btn-lg btn-primary btn-block btn-signin" name="confirm" value="Confirm">Confirm</button></p>
+        </form>
+        <!-- /form -->
+    </div>
+    <h1></h1>
+
+    <nav class="footer-dark navbar-fixed-bottom" style="position: absulate">
+        <footer>
+            <div class="container">
+                <p align=center>This Website is for showing my ability only.</p>
+                <p class="copyright">SayHi © 2018</p>
+            </div>
+        </footer>
+    </nav>
+    <script type="text/javascript">
+        includeHTML();
+        $(document).ready(function() {
+            // DOM ready
+
+            // Test data
+            /*
+             * To test the script you should discomment the function
+             * testLocalStorageData and refresh the page. The function
+             * will load some test data and the loadProfile
+             * will do the changes in the UI
+             */
+            // testLocalStorageData();
+            // Load profile if it exits
+            loadProfile();
+        });
+        $('#confirm').click(function() {
+            $.ajax({
+                type: "POST",
+                url: "api/logout",
+                processData: false,
+                crossDomain: true,
+                contentType: "application/json",
+                data: "",
+                success: function(r) {
+                    withCredentials: true;
+                    document.cookie = "SNID" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    document.cookie = "SNID_" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    window.location.href = "http://localhost/SayHi/index.html"
+                },
+                error: function(r) {
+                    window.alert("Error!");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

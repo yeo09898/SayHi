@@ -109,7 +109,7 @@ if (isset($_GET['username'])) {
                             <div class="timelineposts">
 
                             </div>
-                    </ul>+
+                    </ul>
                 </div>
                 <div class="col-md-3">
                 <?php 
@@ -142,7 +142,11 @@ if (isset($_GET['username'])) {
                     <p>The content of your modal.</p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                        <form id="commentform">
+                                <textarea name='commentbody' id='commentbody' rows='3' cols='80' value="Leave Comments?" placeholder='Leave Comments?'></textarea>
+                                </br><button data-comment="" class="btn btn-primary" type="button">Post Comment</button>
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                        </form>
                 </div>
             </div>
         </div>
@@ -170,6 +174,7 @@ if (isset($_GET['username'])) {
     <nav class="footer-dark navbar-fixed-bottom" style="position: relative">
         <footer>
             <div class="container">
+                <p align=center>This Website is for showing my ability only.</p>
                 <p class="copyright">SayHi © 2018</p>
             </div>
         </footer>
@@ -190,6 +195,7 @@ if (isset($_GET['username'])) {
                         data: '',
                         success: function(r) {
                                 var posts = JSON.parse(r)
+                                var postsId = 0;
                                 $.each(posts, function(index) {
                                         if (posts[index].PostImage == "") {
                                                 $('.timelineposts').html(
@@ -202,6 +208,7 @@ if (isset($_GET['username'])) {
                                         }
                                         $('[data-postid]').click(function() {
                                                 var buttonid = $(this).attr('data-postid');
+                                                postsId = parseInt($(this).attr('data-postid'));
                                                 $.ajax({
                                                         type: "GET",
                                                         url: "api/comments?postid=" + $(this).attr('data-postid'),
@@ -216,6 +223,24 @@ if (isset($_GET['username'])) {
                                                                 console.log(r)
                                                         }
                                                 });
+                                        });
+                                        $('[data-comment]').click(function() {
+                                                var commentbody = document.getElementById("commentbody").value;;
+                                                $.ajax({
+                                                        type: "POST",
+                                                        url: "api/comments?id=" + postsId + "&commentbody=" + commentbody,
+                                                        processData: false,
+                                                        contentType: "application/json",
+                                                        data: '',
+                                                        success: function(r) {
+                                                                var res = JSON.parse(r)
+                                                                showCommentsModal(res);
+                                                        },
+                                                        error: function(r) {
+                                                        console.log(r)
+                                                        }
+                                                });
+                                                document.getElementById("commentform").reset();
                                         });
                                         $('[data-id]').click(function() {
                                                 var buttonid = $(this).attr('data-id');
@@ -279,6 +304,7 @@ if (isset($_GET['username'])) {
                         data: '',
                         success: function(r) {
                                 var posts = JSON.parse(r)
+                                var postsId = 0;
                                 $.each(posts, function(index) {
                                         if (posts[index].PostImage == "") {
                                                 $('.timelineposts').html(
@@ -291,6 +317,7 @@ if (isset($_GET['username'])) {
                                         }
                                         $('[data-postid]').click(function() {
                                                 var buttonid = $(this).attr('data-postid');
+                                                postsId = parseInt($(this).attr('data-postid'));
                                                 $.ajax({
                                                         type: "GET",
                                                         url: "api/comments?postid=" + $(this).attr('data-postid'),
@@ -305,6 +332,24 @@ if (isset($_GET['username'])) {
                                                                 console.log(r)
                                                         }
                                                 });
+                                        });
+                                        $('[data-comment]').click(function() {
+                                                var commentbody = document.getElementById("commentbody").value;;
+                                                $.ajax({
+                                                        type: "POST",
+                                                        url: "api/comments?id=" + postsId + "&commentbody=" + commentbody,
+                                                        processData: false,
+                                                        contentType: "application/json",
+                                                        data: '',
+                                                        success: function(r) {
+                                                                var res = JSON.parse(r)
+                                                                showCommentsModal(res);
+                                                        },
+                                                        error: function(r) {
+                                                                console.log(r)
+                                                        }
+                                                });
+                                        document.getElementById("commentform").reset();
                                         });
                                         $('[data-id]').click(function() {
                                                 var buttonid = $(this).attr('data-id');

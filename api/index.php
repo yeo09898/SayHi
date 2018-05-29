@@ -133,8 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                         echo '{ "Error": "User exists!" }';
                         http_response_code(409);
                 }
-        }
-        if ($_GET['url'] == "auth") {
+        }else if ($_GET['url'] == "auth") {
                 $postBody = file_get_contents("php://input");
                 $postBody = json_decode($postBody);
                 $username = $postBody->username;
@@ -207,6 +206,19 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 $output = substr($output, 0, strlen($output)-1);
                 $output .= "]";
                 echo $output;
+        }else if($_GET['url'] == "logout"){
+                $token = $_COOKIE['SNID'];
+                $userId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
+                if (isset($_POST['alldevices'])) {
+                        $db->query('DELETE FROM login_tokens WHERE user_id=:userid', array(':userid'=>$userId));
+                } else {
+                        if (isset($_COOKIE['SNID'])) {
+                                $db->query('DELETE FROM login_tokens WHERE token=:token', array(':token'=>sha1($_COOKIE['SNID'])));
+                        }
+                        
+                }
+                unsetcookie("SNID");
+                unsetcookie("SNID_");
         }
 
 }  else if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
