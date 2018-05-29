@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>SayHi</title>
-		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-		<script src="./js/sayhi.js"></script>
-	</head>
 
-    <body>
-		<div class="container">
-		<div layout="layout.html"></div>
+<head>
+    <title>SayHi</title>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="./js/sayhi.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div layout="layout.html"></div>
         <div class="card card-container">
             <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
             <img id="profile-img" class="profile-img-card" src="./img/music-social-group.png" />
@@ -24,54 +25,57 @@
                         <input type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" id="login" type="button">Login in</button>
-            </form><!-- /form -->
+                <button class="btn btn-lg btn-primary btn-block btn-signin" id="login" type="button" data-bs-hover-animate="shake">Login in</button>
+            </form>
+            <!-- /form -->
             <a href="#" class="forgot-password">
                 Forgot the password?
             </a>
-        </div><!-- /card-container -->
-    </div><!-- /container -->
-	<nav class="footer-dark navbar-fixed-bottom" style="position: relative">
+        </div>
+        <!-- /card-container -->
+    </div>
+    <!-- /container -->
+    <nav class="footer-dark navbar-fixed-bottom" style="position: relative">
         <footer>
             <div class="container">
                 <p class="copyright">SayHi © 2018</p>
             </div>
         </footer>
     </nav>
-	<script language="javascript">
-			includeHTML();
-			$( document ).ready(function() {
-				// DOM ready
+    <script language="javascript">
+        includeHTML();
+        $(document).ready(function() {
+            // DOM ready
 
-				// Test data
-				/*
-				* To test the script you should discomment the function
-				* testLocalStorageData and refresh the page. The function
-				* will load some test data and the loadProfile
-				* will do the changes in the UI
-				*/
-				// testLocalStorageData();
-				// Load profile if it exits
-				loadProfile();
-			});
-			$('#login').click(function() {
-				$.ajax({
-						type: "POST",
-                        url: "api/auth",
-                        processData: false,
-                        contentType: "application/json",
-                        data: '{ "username": "'+ $("#username").val() +'", "password": "'+ $("#password").val() +'" }',
-                        success: function(r) {
-                                console.log(r)
-                        },
-                        error: function(r) {
-                                window.alert("Invaild Username Or Wrong Password!");
-                        }
-                });
-			});
-</script>
-  </body>
+            // Test data
+            /*
+             * To test the script you should discomment the function
+             * testLocalStorageData and refresh the page. The function
+             * will load some test data and the loadProfile
+             * will do the changes in the UI
+             */
+            // testLocalStorageData();
+            // Load profile if it exits
+            loadProfile();
+        });
+        $('#login').click(function() {
+            $.ajax({
+                type: "POST",
+                url: "api/auth",
+                processData: false,
+                crossDomain: true,
+                contentType: "application/json",
+                data: '{ "username": "' + $("#username").val() + '", "password": "' + $("#password").val() + '" }',
+                success: function(r) {
+                    withCredentials: true,
+                    SetCookie('SNID', r);
+                },
+                error: function(r) {
+                    window.alert("Invaild Username Or Wrong Password!");
+                }
+            });
+        });
+    </script>
+</body>
+
 </html>
-		
-	
-

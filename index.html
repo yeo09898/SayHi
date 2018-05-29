@@ -9,7 +9,6 @@
     <script src="./js/jquery.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="./js/bs-animation.js"></script>
     <script src="./js/sayhi.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
 </head>
@@ -133,7 +132,7 @@
                                         data: '',
                                         success: function(r) {
                                             var res = JSON.parse(r)
-                                            showCommentsModal(res);
+                                            $("[data-id='" + buttonid + "']").html(' <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> ' + res.Likes + ' Likes</span>')
                                         },
                                         error: function(r) {
                                             console.log(r)
