@@ -115,15 +115,15 @@ if (isset($_GET['username'])) {
                 <?php 
                 if($userid == $followerid){
                         echo '
-                        <button class="btn btn-default" type="button" style="width:100%;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;" onclick="showNewPostModal()">NEW POST</button>
+                        <button class="btn btn-primary" type="button" style="width:100%;height:36px;color:#ffde3a;" onclick="showNewPostModal()">NEW POST</button>
                         <ul class="list-group"></ul>
                        ';
                 }else {
                         echo '<form action="profile.php?username='.$username.'" method="post">';
                                 if ($isFollowing) {
-                                        echo '<input type="submit" id="unfollow" class="btn btn-default" name="unfollow" value="Unfollow" style="width:100%;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;">';
+                                        echo '<input type="submit" id="unfollow" class="btn btn-default" name="unfollow" value="Unfollow" style="width:100%;height:36px;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;">';
                                 } else {
-                                        echo '<input type="submit" id="follow" class="btn btn-default" name="follow" value="Follow" style="width:100%;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;">';
+                                        echo '<input type="submit" id="follow" class="btn btn-default" name="follow" value="Follow" style="width:100%;height:36px;background-color:#005b9a;color:#ffde3a;padding:16px 32px;margin:0px 0px 6px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;text-transform:uppercase;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:0;outline:none;">';
                         }
                         echo '</form>';
                 }
@@ -164,7 +164,7 @@ if (isset($_GET['username'])) {
                                 <input type="file" name="postimg">
                         </div>
                         <div class="modal-footer">
-                                <input type="submit" name="post" value="Post" class="btn btn-default" type="button" style="background-color:#0191C8;color:#fff;padding:0px 16px;border:none;box-shadow:none;text-shadow:none;opacity:0.9;font-weight:bold;font-size:13px;letter-spacing:0.4px;line-height:1;outline:none;">
+                                <input type="submit" name="post" value="Post" class="btn btn-primary" type="button" style="height:32px;padding:0px 32px;">
                                 <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
                         </div>
                 </form>

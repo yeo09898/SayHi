@@ -65,7 +65,6 @@ html {
 
 .btn {
     font-weight: 700;
-    height: 36px;
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
@@ -500,4 +499,118 @@ i.glyphicon.glyphicon-search {
     opacity: 0;
     transition: all 2s ease-out;
     width: 100%;
+}
+
+.message-input-div {
+    position: absolute;
+    bottom: 20px;
+    width: 82%;
+}
+
+@media (max-width:767px) {
+    .message-input-div {
+        position: absolute;
+        bottom: -50px !important;
+        width: 64% !important;
+    }
+}
+
+@media (max-width:991px) {
+    .message-input-div {
+        position: absolute;
+        bottom: -50px;
+        width: 82%;
+    }
+}
+
+@media (max-width:1199px) {
+    .message-input-div {
+        position: absolute;
+        bottom: 5px;
+        width: 82%;
+    }
+}
+
+@media (min-width:1200px) {
+    .message-input-div {
+        position: absolute;
+        bottom: 5px;
+        width: 85%;
+    }
+}
+
+.msg-button-send {
+    background-image: url("none");
+    background-color: #428bca;
+    color: #fff;
+    padding: 15px 28px;
+    margin: 0px 0px 6px;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 0.9;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    outline: none;
+    position: absolute;
+    bottom: 15px;
+    right: 17px;
+}
+
+@media (max-width:767px) {
+    .msg-button-send {
+        bottom: -55px !important;
+    }
+}
+
+@media (max-width:991px) {
+    .msg-button-send {
+        bottom: -55px;
+    }
+}
+
+@media (max-width:1199px) {
+    .msg-button-send {
+        bottom: 0px;
+    }
+}
+
+@media (min-width:1200px) {
+    .msg-button-send {
+        bottom: 0px;
+    }
+}
+
+.message-from-other {
+    width: 50%;
+    background-color: #e8e8e8;
+    min-height: 40px;
+    border-radius: 10px;
+    float: left;
+}
+
+.message-from-me {
+    width: 50%;
+    background-color: #0191c8;
+    min-height: 40px;
+    border-radius: 10px;
+    float: right;
+}
+
+.message-from-other p {
+    color: #010101;
+    padding: 10px;
+}
+
+.message-spacer p {
+    color: #FFF;
+    padding: 10px;
+    user-select: none;
+}
+
+.message {
+    margin-bottom: 0px;
 }

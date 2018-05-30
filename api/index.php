@@ -3,7 +3,21 @@ require_once("DB.php");
 require_once("Mail.php");
 $db = new DB("127.0.0.1", "socialnetwork", "bear", "shuzi");
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-        if ($_GET['url'] == "auth") {
+        if ($_GET['url'] == "musers") {
+                $token = $_COOKIE['SNID'];
+                $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
+                $users = $db->query("SELECT DISTINCT s.username AS Sender, r.username AS Receiver, s.id AS SenderID, r.id AS ReceiverID FROM messages LEFT JOIN users s ON s.id = messages.sender LEFT JOIN users r ON r.id = messages.receiver WHERE (s.id = :userid OR r.id=:userid)", array(":userid"=>$userid));
+                $u = array();
+                foreach ($users as $user) {
+                        if (!in_array(array('username'=>$user['Receiver'], 'id'=>$user['ReceiverID']), $u)) {
+                                array_push($u, array('username'=>$user['Receiver'], 'id'=>$user['ReceiverID']));
+                        }
+                        if (!in_array(array('username'=>$user['Sender'], 'id'=>$user['SenderID']), $u)) {
+                                array_push($u, array('username'=>$user['Sender'], 'id'=>$user['SenderID']));
+                        }
+                }
+                echo json_encode($u);
+        } else if ($_GET['url'] == "auth") {
         } else if ($_GET['url'] == "search") {
                 $tosearch = explode(" ", $_GET['query']);
                 if (count($tosearch) == 1) {
@@ -20,7 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 $posts = $db->query('SELECT posts.id, posts.body, users.username, posts.posted_at FROM posts, users WHERE users.id = posts.user_id AND posts.body LIKE :body '.$whereclause.' LIMIT 10', $paramsarray);
                 //echo "<pre>";
                 echo json_encode($posts);
-        } else if ($_GET['url'] == "users") {
+        } else if ($_GET['url'] == "messages") {
+                $sender = $_GET['sender'];
+                $token = $_COOKIE['SNID'];
+                $receiver = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
+                $messages = $db->query('SELECT messages.id, messages.body, s.username AS Sender, r.username AS Receiver
+                FROM messages
+                LEFT JOIN users s ON messages.sender = s.id
+                LEFT JOIN users r ON messages.receiver = r.id
+                WHERE (r.id=:r AND s.id=:s) OR (r.id=:s AND s.id=:r)', array(':r'=>$receiver, ':s'=>$sender));
+                echo json_encode($messages);
+        }else if ($_GET['url'] == "users") {
                 $token = $_COOKIE['SNID'];
                 $user_id = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 $username = $db->query('SELECT username FROM users WHERE id=:uid', array(':uid'=>$user_id))[0]['username'];
@@ -37,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                         //echo $comment['comment']." ~ ".$comment['username']."<hr />";
                 }
                 if($output == "["){
-                        $output .= '{"Comment": "Oh! It is empty~","CommentedBy": "SayHi"},';
+                        $output .= '{"Comment": "Ops! It is empty~","CommentedBy": "SayHi"},';
                 }
                 $output = substr($output, 0, strlen($output)-1);
                 $output .= "]";
@@ -93,7 +117,21 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo $response;
         }
 } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if ($_GET['url'] == "users") {
+        
+        if ($_GET['url'] == "message") {
+                $token = $_COOKIE['SNID'];
+                $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
+                $postBody = file_get_contents("php://input");
+                $postBody = json_decode($postBody);
+                $body = $postBody->body;
+                $receiver = $postBody->receiver;
+                if (strlen($body) > 100) {
+                        echo "{ 'Error': 'Message too long!' }";
+                }
+                $db->query("INSERT INTO messages VALUES (null, :body, :sender, :receiver, '0')", array(':body'=>$body, ':sender'=>$userid, ':receiver'=>$receiver));
+                echo '{ "Success": "Message Sent!" }';
+
+        } else if ($_GET['url'] == "users") {
                 $postBody = file_get_contents("php://input");
                 $postBody = json_decode($postBody);
                 $username = $postBody->username;

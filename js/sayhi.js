@@ -58,12 +58,25 @@ function includeHTML() {
 
     var s = "";
     if (getCookie('SNID')) {
-        s = '<li id="message"><a href="#">Messages</a></li><li class="divider"></li><li id="signout"><a href="http://localhost/SayHi/logout.html">Sign Out</a></li>';
+        s = '<li id="message"><a href="http://localhost/SayHi/messages.html">Messages</a></li><li class="divider"></li><li id="signout"><a href="http://localhost/SayHi/logout.html">Sign Out</a></li>';
     } else {
-        s = '<li id="signup"><a href="http://localhost/SayHi/create-account.html">Sign Up' + document.cookie + '</a></li><li id="signin"><a href="http://localhost/SayHi/login.html">Sign In</a></li>';
+        s = '<li id="signup"><a href="http://localhost/SayHi/create-account.html">Sign Up</a></li><li id="signin"><a href="http://localhost/SayHi/login.html">Sign In</a></li>';
     }
 
     document.getElementById("isSignin").innerHTML += s;
+}
+
+function getUsername() {
+    $.ajax({
+        type: "GET",
+        url: "api/users",
+        processData: false,
+        contentType: "application/json",
+        data: '',
+        success: function(r) {
+            USERNAME = r;
+        }
+    })
 }
 
 function SetCookie(name, value, days) {

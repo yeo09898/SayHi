@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SayHi</title>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="./js/sayhi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+</head>
+
+<body>
+    <div layout="layout.html"></div>
+    <div class="container">
+        <h1>My Messages</h1>
+    </div>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="list-group" id="users">
+                    </ul>
+                </div>
+                <div class="col-md-9" style="position:relative;">
+                    <ul class="list-group">
+                        <li class="list-group-item" id="m" style="overflow:auto;height:500px;margin-bottom:55px;">
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary msg-button-send" id='sendmessage' type="button">SEND </button>
+                    <div class="message-input-div">
+                        <input type="text" id="messagecontent" style="width:100%;height:45px;font-size:16px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="footer-dark navbar-fixed-bottom" style="position: relative">
+        <footer>
+            <div class="container">
+                <p align=center>This Website is for showing my ability only.</p>
+                <p class="copyright">SayHi © 2018</p>
+            </div>
+        </footer>
+    </nav>
+    <script type="text/javascript">
+        includeHTML();
+        SENDER = window.location.hash.split('#')[1];
+        USERNAME = "";
+
+        $(document).ready(function() {
+
+            $(window).on('hashchange', function() {
+                location.reload()
+            })
+
+            $('#sendmessage').click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "api/message",
+                    processData: false,
+                    contentType: "application/json",
+                    data: '{ "body": "' + $("#messagecontent").val() + '", "receiver": "' + SENDER + '" }',
+                    success: function(r) {
+                        window.location = '';
+                    },
+                    error: function(r) {}
+                })
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "api/musers",
+                processData: false,
+                contentType: "application/json",
+                data: '',
+                success: function(r) {
+                    r = JSON.parse(r)
+                    for (var i = 0; i < r.length; i++) {
+                        $('#users').append('<li id="user' + i + '" data-id=' + r[i].id + ' class="list-group-item" style="background-color:#FFF;"><span style="font-size:16px;"><strong>' + r[i].username + '</strong></span></li>')
+                        $('#user' + i).click(function() {
+                            window.location = 'messages.html#' + $(this).attr('data-id')
+                        })
+                    }
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "api/messages?sender=" + SENDER,
+                processData: false,
+                contentType: "application/json",
+                data: '',
+                success: function(r) {
+                    r = JSON.parse(r)
+                    $.ajax({
+                        type: "GET",
+                        url: "api/users",
+                        processData: false,
+                        contentType: "application/json",
+                        data: '',
+                        success: function(u) {
+                            USERNAME = u;
+                            for (var i = 0; i < r.length; i++) {
+                                if (r[i].Sender == USERNAME) {
+                                    $('#m').append('<div class="message-from-me message"><p style="color:#FFF;padding:10px;">' + r[i].body + '</p></div><div class="message-spacer message"><p>' + r[i].body + '</p></div>')
+                                } else {
+                                    $('#m').append('<div class="message-from-other message"><p>' + r[i].body + '</p></div><div class="message-spacer message"><p>' + r[i].body + '</p></div>')
+                                }
+                            }
+                        }
+                    })
+                },
+                error: function(r) {
+                    console.log(r)
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
