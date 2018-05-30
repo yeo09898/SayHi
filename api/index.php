@@ -117,16 +117,28 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo $response;
         }
 } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        
-        if ($_GET['url'] == "message") {
+        if (isset($_COOKIE['SNID'])) {
                 $token = $_COOKIE['SNID'];
-                $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
+        } else {
+                die();
+        }
+        $userId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
+        if ($_GET['url'] == "message") {
                 $postBody = file_get_contents("php://input");
                 $postBody = json_decode($postBody);
                 $body = $postBody->body;
                 $receiver = $postBody->receiver;
                 if (strlen($body) > 100) {
                         echo "{ 'Error': 'Message too long!' }";
+                }
+                if ($body == null) {
+                  $body = "";
+                }
+                if ($receiver == null) {
+                  die();
+                }
+                if ($userid == null) {
+                  die();
                 }
                 $db->query("INSERT INTO messages VALUES (null, :body, :sender, :receiver, '0')", array(':body'=>$body, ':sender'=>$userid, ':receiver'=>$receiver));
                 echo '{ "Success": "Message Sent!" }';
@@ -195,7 +207,6 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 }
         }else if ($_GET['url'] == "likes") {
                 $postId = $_GET['id'];
-                $token = $_COOKIE['SNID'];
                 $likerId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 if (!$db->query('SELECT user_id FROM post_likes WHERE post_id=:postid AND user_id=:userid', array(':postid'=>$postId, ':userid'=>$likerId))) {
                         $db->query('UPDATE posts SET likes=likes+1 WHERE id=:postid', array(':postid'=>$postId));
@@ -211,8 +222,6 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo "}";
         }else if ($_GET['url'] == "comments" && isset($_GET['id']) && isset($_GET['commentbody'])) {
                 $postId = $_GET['id'];
-                $token = $_COOKIE['SNID'];
-                $userId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 $commentBody = $_GET['commentbody'];
                 if(strlen($commentBody) < 1){
 			die('Please Enter Something Before Post!');
@@ -245,8 +254,6 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 $output .= "]";
                 echo $output;
         }else if($_GET['url'] == "logout"){
-                $token = $_COOKIE['SNID'];
-                $userId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 if (isset($_POST['alldevices'])) {
                         $db->query('DELETE FROM login_tokens WHERE user_id=:userid', array(':userid'=>$userId));
                 } else {

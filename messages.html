@@ -38,10 +38,12 @@
             </div>
         </div>
     </div>
-    <nav class="footer-dark navbar-fixed-bottom" style="position: relative">
+    <nav class="footer-dark navbar-fixed-bottom" style="position: absolute">
         <footer>
             <div class="container">
                 <p align=center>This Website is for showing my ability only.</p>
+                <p align=center>Go to other's profile page to follow other users, you can do it by search posts in the search bar.</p>
+                <p align=center>To test the messages system please use 'Shenghong' and 'bear' both password would be 123456.</p>
                 <p class="copyright">SayHi © 2018</p>
             </div>
         </footer>
@@ -50,6 +52,19 @@
         includeHTML();
         SENDER = window.location.hash.split('#')[1];
         USERNAME = "";
+
+        function getUsername() {
+            $.ajax({
+                type: "GET",
+                url: "api/users",
+                processData: false,
+                contentType: "application/json",
+                data: '',
+                success: function(r) {
+                    USERNAME = r;
+                }
+            })
+        }
 
         $(document).ready(function() {
 

@@ -1,4 +1,6 @@
 function includeHTML() {
+    var USERNAME = ""
+
     $('.sbox').keyup(function() {
         $('#searchres').show();
         $('.autocomplete').html("")
@@ -58,24 +60,25 @@ function includeHTML() {
 
     var s = "";
     if (getCookie('SNID')) {
-        s = '<li id="message"><a href="http://localhost/SayHi/messages.html">Messages</a></li><li class="divider"></li><li id="signout"><a href="http://localhost/SayHi/logout.html">Sign Out</a></li>';
+        s = '<li><a id="myprofile">Profile</a></li><li id="message"><a href="http://localhost/SayHi/messages.html">Messages</a></li><li class="divider"></li><li id="signout"><a href="http://localhost/SayHi/logout.html">Sign Out</a></li>';
     } else {
         s = '<li id="signup"><a href="http://localhost/SayHi/create-account.html">Sign Up</a></li><li id="signin"><a href="http://localhost/SayHi/login.html">Sign In</a></li>';
     }
 
     document.getElementById("isSignin").innerHTML += s;
-}
 
-function getUsername() {
-    $.ajax({
-        type: "GET",
-        url: "api/users",
-        processData: false,
-        contentType: "application/json",
-        data: '',
-        success: function(r) {
-            USERNAME = r;
-        }
+    $('#myprofile').click(function() {
+        $.ajax({
+            type: "GET",
+            url: "api/users",
+            processData: false,
+            contentType: "application/json",
+            data: '',
+            success: function(r) {
+                USERNAME = r;
+                window.location.href = "http://localhost/SayHi/profile.php?username=" + USERNAME;
+            }
+        })
     })
 }
 
