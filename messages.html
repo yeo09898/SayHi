@@ -65,13 +65,10 @@
                 }
             })
         }
-
         $(document).ready(function() {
-
             $(window).on('hashchange', function() {
                 location.reload()
             })
-
             $('#sendmessage').click(function() {
                 $.ajax({
                     type: "POST",
@@ -85,7 +82,6 @@
                     error: function(r) {}
                 })
             })
-
             $.ajax({
                 type: "GET",
                 url: "api/musers",
@@ -102,7 +98,6 @@
                     }
                 }
             })
-
             $.ajax({
                 type: "GET",
                 url: "api/messages?sender=" + SENDER,

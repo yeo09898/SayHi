@@ -48,16 +48,6 @@
             </div>
         </div>
     </div>
-    <nav class="footer-dark navbar-fixed-bottom" style="position: relative">
-        <footer>
-            <div class="container">
-                <p align=center>This Website is for showing my ability only.</p>
-                <p align=center>Go to other's profile page to follow other users, you can do it by search posts in the search bar.</p>
-                <p align=center>To test the messages system please use 'Shenghong' and 'bear' both password would be 123456.</p>
-                <p class="copyright">SayHi © 2018</p>
-            </div>
-        </footer>
-    </nav>
 
 
 
@@ -65,6 +55,14 @@
         includeHTML();
         var start = 10;
         var working = false;
+        var s = "";
+        var footer = "";
+        if (getCookie('SNID')) {
+            f = '<nav class="footer-dark navbar-fixed-bottom" style="position: relative"><footer class="page-footer font-small stylish-color-dark pt-4 mt-4"><div class="container text-center text-md-left"><div class="row"><div class="col-md-3 mx-auto"></div><div class="col-md-6 mx-auto"><p align=center>This Website is for showing my ability only.</p><p align=center>Go to profile page of other user to follow them, you can do it by search posts in the search bar.</p><p align=center>To test the messages system please use "Shenghong" and "bear" both password would be 123456.</p><p class="copyright"></p></div><div class="col-md-3 mx-auto"></div></div><div class="footer-copyright text-center py-3">SayHi © 2018:</div></footer></nav>';
+        } else {
+            f = '<nav class="footer-dark navbar-fixed-bottom" style="position: absolute"><footer class="page-footer font-small stylish-color-dark pt-4 mt-4"><div class="container text-center text-md-left"><div class="row"><div class="col-md-3 mx-auto"></div><div class="col-md-6 mx-auto"><p align=center>This Website is for showing my ability only.</p><p align=center>Go to profile page of other user to follow them, you can do it by search posts in the search bar.</p><p align=center>To test the messages system please use "Shenghong" and "bear" both password would be 123456.</p><p class="copyright"></p></div><div class="col-md-3 mx-auto"></div></div><div class="footer-copyright text-center py-3">SayHi © 2018:</div></footer></nav>';
+        }
+        $("body").append(f);
         $(window).scroll(function() {
             if ($(this).scrollTop() + 1 >= $('body').height() - $(window).height()) {
                 if (working == false) {
@@ -88,7 +86,6 @@
                                         $('.timelineposts').html() + '<li class="list-group-item" id="' + posts[index].PostId + '"><blockquote><p>' + posts[index].PostBody + '</p><img src="" data-tempsrc="' + posts[index].PostImage + '" class="postimg" id="img' + posts[index].postId + '"><footer align="right">Posted by ' + posts[index].PostedBy + ' on ' + posts[index].PostDate + '</br><div style = "text-align:right;"><button class="btn-like btn-default" data-id="' + posts[index].PostId + '" type="button" style="color:#eb3b60;;background-color:#f2f6fc;"> <i class="glyphicon glyphicon-heart" data-aos="flip-right"></i><span> ' + posts[index].Likes + ' Likes</span></button><button class="btn-comment btn-default comment" type="button" data-postid="' + posts[index].PostId + '" style="color:#eb3b60;;background-color:#f2f6fc;"><i class="glyphicon glyphicon-flash" style="color:#f9d616;"></i><span style="color:#f9d616;"> Comments</span></button></footer></blockquote></li></div>'
                                     )
                                 }
-
                                 $('[data-postid]').click(function() {
                                     var buttonid = $(this).attr('data-postid');
                                     postsId = parseInt($(this).attr('data-postid'));
@@ -143,21 +140,17 @@
                                     });
                                 })
                             })
-
                             $('.postimg').each(function() {
                                 this.src = $(this).attr('data-tempsrc')
                                 this.onload = function() {
                                     this.style.opacity = '1';
                                 }
                             })
-
                             scrollToAnchor(location.hash)
-
                             start += 10;
                             setTimeout(function() {
                                 working = false;
                             }, 4000)
-
                         },
                         error: function(r) {
                             console.log(r)
@@ -177,7 +170,6 @@
                 console.log(error)
             }
         }
-
         $(document).ready(function() {
             $.ajax({
                 type: "GET",
@@ -216,7 +208,6 @@
                                 }
                             });
                         });
-
                         $('[data-comment]').click(function() {
                             var commentbody = document.getElementById("commentbody").value;
                             $.ajax({
@@ -235,7 +226,6 @@
                             });
                             document.getElementById("commentform").reset();
                         });
-
                         $('[data-id]').click(function() {
                             var buttonid = $(this).attr('data-id');
                             $.ajax({
@@ -254,14 +244,12 @@
                             });
                         });
                     })
-
                     $('.postimg').each(function() {
                         this.src = $(this).attr('data-tempsrc')
                         this.onload = function() {
                             this.style.opacity = '1';
                         }
                     })
-
                     scrollToAnchor(location.hash)
                 },
                 error: function(r) {
@@ -269,7 +257,6 @@
                 }
             });
         });
-
 
         function showCommentsModal(res) {
             $('.modal').modal('show')

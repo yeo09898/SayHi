@@ -4,11 +4,9 @@ include('./classes/Login.php');
 include('./classes/Post.php');
 include('./classes/Image.php');
 include('./classes/Notify.php');
-
 $username = "";
 $verified = False;
 $isFollowing = False;
-
 if (isset($_GET['username'])) {
         if (DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$_GET['username']))) {
                 $username = DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['username'];
@@ -262,21 +260,17 @@ if (isset($_GET['username'])) {
                                                 });
                                         })
                                 })
-
                                 $('.postimg').each(function() {
                                         this.src=$(this).attr('data-tempsrc')
                                         this.onload = function() {
                                                 this.style.opacity = '1';
                                         }
                                 })
-
 				scrollToAnchor(location.hash)
-
                                 start+=5;
                                 setTimeout(function() {
                                         working = false;
                                 }, 4000)
-
                         },
                         error: function(r) {
                                 console.log(r)
@@ -285,7 +279,6 @@ if (isset($_GET['username'])) {
                     }
             }
     })
-
         function scrollToAnchor(aid) {
                 try {
                         var aTag = $(aid);
@@ -296,7 +289,6 @@ if (isset($_GET['username'])) {
                         console.log(error)
                 }
         }
-
         $(document).ready(function() {
                 $.ajax({
                         type: "GET",
@@ -371,14 +363,12 @@ if (isset($_GET['username'])) {
                                                 });
                                         })
                                 })
-
                                 $('.postimg').each(function() {
                                         this.src=$(this).attr('data-tempsrc')
                                         this.onload = function() {
                                                 this.style.opacity = '1';
                                         }
                                 })
-
 				scrollToAnchor(location.hash)
                         },
                         error: function(r) {
@@ -386,11 +376,9 @@ if (isset($_GET['username'])) {
                         }
                 });
         });
-
 	function showNewPostModal() {
                 $('#newpost').modal('show')
         }
-
         function showCommentsModal(res) {
                 $('#commentsmodal').modal('show')
                 var output = "";
