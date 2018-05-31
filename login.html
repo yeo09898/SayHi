@@ -84,7 +84,18 @@
                     withCredentials: true,
                     SetCookie('SNID', r, 7),
                     SetCookie('SNID_', 1, 3),
-                    window.location.href = "http://localhost/SayHi/index.html"
+                    USERNAME = "",
+                    $.ajax({
+                        type: "GET",
+                        url: "api/users",
+                        processData: false,
+                        contentType: "application/json",
+                        data: '',
+                        success: function(r) {
+                            USERNAME = r;
+                            window.location.href = "profile.php?username=" + USERNAME;
+                        }
+                    })
                 },
                 error: function(r) {
                     window.alert("Invaild Username Or Wrong Password!");

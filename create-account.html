@@ -24,7 +24,7 @@
                 <button class="btn btn-lg btn-primary btn-block btn-signin" id="signup" type="button">Sign Up</button>
             </form>
             <!-- /form -->
-            <a href="http://localhost/SayHi/login.html" class="forgot-password">
+            <a href="login.html" class="forgot-password">
                 Aready Have a Account?
             </a>
         </div>
@@ -78,14 +78,11 @@
                 data: '{ "username": "' + $("#username").val() + '", "email": "' + $("#email").val() + '", "password": "' + $("#password").val() + '" }',
                 success: function(r) {
                     console.log(r)
-                        //window.location.href = '';
+                    window.location.href = "login.html";
                 },
                 error: function(r) {
-                    setTimeout(function() {
-                        $('[data-bs-hover-animate]').removeClass('animated ' + $('[data-bs-hover-animate]').attr('data-bs-hover-animate'));
-                    }, 2000)
-                    $('[data-bs-hover-animate]').addClass('animated ' + $('[data-bs-hover-animate]').attr('data-bs-hover-animate'))
-                    console.log(r)
+                    console.log(r),
+                        window.alert('Invaild Username Or Email!')
                 }
             });
         });

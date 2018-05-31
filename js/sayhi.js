@@ -60,9 +60,9 @@ function includeHTML() {
 
     var s = "";
     if (getCookie('SNID')) {
-        s = '<li><a id="myprofile">Profile</a></li><li id="message"><a href="http://localhost/SayHi/messages.html">Messages</a></li><li class="divider"></li><li id="signout"><a href="http://localhost/SayHi/logout.html">Sign Out</a></li>';
+        s = '<li><a id="myprofile">Profile</a></li><li id="message"><a href="messages.html">Messages</a></li><li class="divider"></li><li id="signout"><a href="logout.html">Sign Out</a></li>';
     } else {
-        s = '<li id="signup"><a href="http://localhost/SayHi/create-account.html">Sign Up</a></li><li id="signin"><a href="http://localhost/SayHi/login.html">Sign In</a></li>';
+        s = '<li id="signup"><a href="create-account.html">Sign Up</a></li><li id="signin"><a href="login.html">Sign In</a></li>';
     }
 
     document.getElementById("isSignin").innerHTML += s;
@@ -76,7 +76,7 @@ function includeHTML() {
             data: '',
             success: function(r) {
                 USERNAME = r;
-                window.location.href = "http://localhost/SayHi/profile.php?username=" + USERNAME;
+                window.location.href = "profile.php?username=" + USERNAME;
             }
         })
     })
