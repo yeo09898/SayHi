@@ -117,12 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo $response;
         }
 } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (isset($_COOKIE['SNID'])) {
-                $token = $_COOKIE['SNID'];
-        } else {
-                die();
-        }
         if ($_GET['url'] == "message") {
+                if (isset($_COOKIE['SNID'])) {
+                        $token = $_COOKIE['SNID'];
+                } else {
+                        die();
+                }
                 $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 $postBody = file_get_contents("php://input");
                 $postBody = json_decode($postBody);
