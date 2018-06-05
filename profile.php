@@ -141,7 +141,7 @@ if (isset($_GET['username'])) {
                 </div>
                 <div class="modal-footer">
                         <form id="commentform">
-                                <textarea name='commentbody' id='commentbody' rows='3' cols='80' value="Leave Comments?" placeholder='Leave Comments?'></textarea>
+                                <textarea name='commentbody' id='commentbody' rows='3' cols='80' value='Leave Comments?' placeholder='Leave Comments?  Do not use ""'></textarea>
                                 </br><button data-comment="" class="btn btn-primary" type="button">Post Comment</button>
                                 <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
                         </form>
@@ -157,7 +157,7 @@ if (isset($_GET['username'])) {
                     <h4 class="modal-title">New Post</h4></div>
                 <form action="profile.php?username=<?php echo $username; ?>" method="post" enctype="multipart/form-data">
                         <div style="max-height: 400px; overflow-y: auto">
-                                <textarea name="postbody" rows="8" cols="80" placeholder="Write Something?"></textarea>
+                                <textarea name="postbody" rows="8" cols="80" placeholder='Write Something?  Do not use ""'></textarea>
                                 </br>Upload an image:
                                 <input type="file" name="postimg">
                         </div>
