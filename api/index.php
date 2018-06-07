@@ -1,8 +1,13 @@
 <?php
 require_once("DB.php");
 require_once("Mail.php");
+
+//database setting
 $db = new DB("127.0.0.1", "socialnetwork", "bear", "shuzi");
+
+//get requests
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
+	//return all users that has sent a message to the current user
         if ($_GET['url'] == "musers") {
                 $token = $_COOKIE['SNID'];
                 $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
@@ -19,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo json_encode($u);
         } else if ($_GET['url'] == "auth") {
         } else if ($_GET['url'] == "search") {
+		//searchbar
                 $tosearch = explode(" ", $_GET['query']);
                 if (count($tosearch) == 1) {
                         $tosearch = str_split($tosearch[0], 2);
@@ -35,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 //echo "<pre>";
                 echo json_encode($posts);
         } else if ($_GET['url'] == "messages") {
+		//return all related messages
                 $sender = $_GET['sender'];
                 $token = $_COOKIE['SNID'];
                 $receiver = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
@@ -45,11 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 WHERE (r.id=:r AND s.id=:s) OR (r.id=:s AND s.id=:r)', array(':r'=>$receiver, ':s'=>$sender));
                 echo json_encode($messages);
         }else if ($_GET['url'] == "users") {
+		//get the current username
                 $token = $_COOKIE['SNID'];
                 $user_id = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 $username = $db->query('SELECT username FROM users WHERE id=:uid', array(':uid'=>$user_id))[0]['username'];
                 echo $username;
         } else if ($_GET['url'] == "comments" && isset($_GET['postid'])) {
+		//get all comment for current post
                 $output = "";
                 $comments = $db->query('SELECT comments.comment, users.username FROM comments, users WHERE post_id = :postid AND comments.user_id = users.id', array(':postid'=>$_GET['postid']));
                 $output .= "[";
@@ -67,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 $output .= "]";
                 echo $output;
         }else if ($_GET['url'] == "posts") {
+		//get all posts relatied to the login user
                 $start = (int)$_GET['start'];
                 $token = $_COOKIE['SNID'];
                 $userid = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
@@ -93,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 http_response_code(200);
                 echo $response;
         }else if ($_GET['url'] == "profileposts") {
+		//get all posts created by the user of the profile
                 $start = (int)$_GET['start'];
                 $userid = $db->query('SELECT id FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['id'];
                 $followingposts = $db->query('SELECT posts.id, posts.body, posts.posted_at, posts.postimg, posts.likes, users.`username` FROM users, posts
@@ -117,7 +128,9 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo $response;
         }
 } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
+	//post request
         if ($_GET['url'] == "message") {
+		//post a message
                 if (isset($_COOKIE['SNID'])) {
                         $token = $_COOKIE['SNID'];
                 } else {
@@ -135,6 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo '{ "Success": "Message Sent!" }';
 
         } else if ($_GET['url'] == "users") {
+		//create a user
                 $postBody = file_get_contents("php://input");
                 $postBody = json_decode($postBody);
                 $username = $postBody->username;
@@ -175,6 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                         http_response_code(409);
                 }
         }else if ($_GET['url'] == "auth") {
+		//login
                 $postBody = file_get_contents("php://input");
                 $postBody = json_decode($postBody);
                 $username = $postBody->username;
@@ -197,6 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                         http_response_code(401);
                 }
         }else if ($_GET['url'] == "likes") {
+		//post likes
                 $postId = $_GET['id'];
                 $token = $_COOKIE['SNID'];
                 $likerId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
@@ -213,6 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 echo $db->query('SELECT likes FROM posts WHERE id=:postid', array(':postid'=>$postId))[0]['likes'];
                 echo "}";
         }else if ($_GET['url'] == "comments" && isset($_GET['id']) && isset($_GET['commentbody'])) {
+		//write comments to a post
                 $postId = $_GET['id'];
                 $token = $_COOKIE['SNID'];
                 $userId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
@@ -248,6 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 $output .= "]";
                 echo $output;
         }else if($_GET['url'] == "logout"){
+		//logout
                 $token = $_COOKIE['SNID'];
                 $userId = $db->query('SELECT user_id FROM login_tokens WHERE token=:token', array(':token'=>sha1($token)))[0]['user_id'];
                 if (isset($_POST['alldevices'])) {
