@@ -15,19 +15,19 @@ if (Login::isLoggedIn()) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SayHi</title>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="./js/jquery.min.js"></script>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="./js/sayhi.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="./js/jquery.min.js"></script>
+        <script src="./js/bs-animation.js"></script>
+	<script src="./js/sayhi.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 	<div layout="layout.html"></div>
-    	<div class="container">
-        	<h1>Notifications </h1></div>
         <div class="container">
+        <h1>Notifications </h1>
             <div class="row">
                 <div class="col-md-12">
                     <ul class="list-group">

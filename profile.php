@@ -5,13 +5,16 @@ include('./classes/Post.php');
 include('./classes/Image.php');
 include('./classes/Notify.php');
 $username = "";
+$about = "";
 $verified = False;
 $isFollowing = False;
+$inedit = false;
 if (isset($_GET['username'])) {
         if (DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$_GET['username']))) {
                 $username = DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['username'];
                 $userid = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['id'];
                 $verified = DB::query('SELECT verified FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['verified'];
+                $about = DB::query('SELECT about FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['about'];
                 $followerid = Login::isLoggedIn();
                 if (isset($_POST['follow'])) {
                         if ($userid != $followerid) {
@@ -50,16 +53,20 @@ if (isset($_GET['username'])) {
 		        }
 		}		
                 if (isset($_POST['post'])) {
-					if($_FILES['postimg']['size'] == 0){
-						Post::createPost($_POST['postbody'], Login::isLoggedIn(), $userid);
-					}else{
-						$postid = Post::createImgPost($_POST['postbody'], Login::isLoggedIn(), $userid, $_FILES);
-						Image::uploadImage('postimg', "UPDATE posts SET postimg=:postimg WHERE id=:postid",array(':postid'=>$postid));
-					}
-				}
-				if(isset($_GET['postid']) && !isset($_POST['deletepost'])){
-					Post::likePost($_GET['postid'], $followerid);
-				}
+			if($_FILES['postimg']['size'] == 0){
+				Post::createPost($_POST['postbody'], Login::isLoggedIn(), $userid);
+			}else{
+				$postid = Post::createImgPost($_POST['postbody'], Login::isLoggedIn(), $userid, $_FILES);
+				Image::uploadImage('postimg', "UPDATE posts SET postimg=:postimg WHERE id=:postid",array(':postid'=>$postid));
+			}
+                }
+                if(isset($_POST['aboutpost'])){
+                        DB::query('UPDATE users SET about=:about  WHERE id=:userid', array(':userid'=>$userid, ':about'=>$_POST['aboutbody']));
+                        header ("Location: profile.php?username=$username");
+		}
+		if(isset($_GET['postid']) && !isset($_POST['deletepost'])){
+			Post::likePost($_GET['postid'], $followerid);
+		}
 				
                 $posts = Post::displayPosts($userid, $username, $followerid);
 				
@@ -97,8 +104,10 @@ if (isset($_GET['username'])) {
             <div class="row">
                 <div class="col-md-3">
                     <ul class="list-group">
-                        <li class="list-group-item"><span><strong>About Me</strong></span>
-                            <p>Welcome to my profile bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;bla bla&nbsp;</p>
+                        <li class="list-group-item">
+                                <p align="center"><strong>About Me</strong>
+                                <?php if($userid == $followerid)echo '<button class="btn-edit btn-info" onclick="showAboutModal()"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></p>' ?>
+                                <p align="center"><?php echo $about; ?></p>
                         </li>
                     </ul>
                 </div>
@@ -163,6 +172,24 @@ if (isset($_GET['username'])) {
                         </div>
                         <div class="modal-footer">
                                 <input type="submit" name="post" value="Post" class="btn btn-primary" type="button" style="height:32px;padding:0px 32px;">
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="about" role="dialog" tabindex="-1" style="padding-top:100px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    <h4 class="modal-title">About Me</h4></div>
+                <form action="profile.php?username=<?php echo $username; ?>" method="post" enctype="multipart/form-data">
+                        <div style="max-height: 400px; overflow-y: auto">
+                                <textarea align="center" name="aboutbody" rows="8" cols="80" style="width: 100%"><?php echo $about ?></textarea>
+                        </div>
+                        <div class="modal-footer">
+                                <input type="submit" name="aboutpost" value="Save" class="btn btn-primary" type="button" style="height:32px;padding:0px 32px;">
                                 <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
                         </div>
                 </form>
@@ -398,6 +425,9 @@ if (isset($_GET['username'])) {
                         output += "<hr />";
                 }
                 $('.modal-body').html(output)
+        }
+        function showAboutModal() {
+                $('#about').modal('show')
         }
     </script>
 </body>
